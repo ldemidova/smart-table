@@ -1,0 +1,20 @@
+version: "3"
+networks:
+  smart-design:
+    external: true
+
+services:
+  api:
+    container_name: smart-table-api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: smart-table:latest
+    volumes:
+      - $PWD:/app:cached
+    working_dir: /app
+    command: sh -c "npm run api:start"
+    networks:
+      - smart-design
+    ports:
+      - 5000:5000

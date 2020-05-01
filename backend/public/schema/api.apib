@@ -1,0 +1,60 @@
+FORMAT: 1A
+
+# Smart Table
+
+Генерация документации по схеме:
+
+`$ cd /public/schema`
+
+`$ docker run -it --rm -v $PWD:/doc quay.io/bukalapak/snowboard:v3.6.0 html --watch --watch-interval 100ms -o index.html -c config.yaml api.apib`
+
+
+# Group system
+Системные методы
+
+## Schema [/schema/api.apib]
+
+### Get schema [GET]
+Получить схему api в формате BluePrint
+
++ Request json (application/json)
+
+    + Headers
+
+            Authorization: test
+
++ Response 200
+    + Attributes (object)
+
+
+
+
+## System Health [/system/health]
+
+### Get system health [GET]
+Healthcheck endpoint
+
++ Request json (application/json)
+
+    + Headers
+
+            Authorization: test
+
++ Response 200 (application/json)
+    + Attributes (Health)
+
+
+    + Body
+
+            {
+              "current_unix_timestamp": 1513934731
+            }
+
+
+# Data Structures
+
+## Health (object)
+
+
+### Properties
++ `current_unix_timestamp` (number, required)
