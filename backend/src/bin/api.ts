@@ -1,7 +1,7 @@
 import express from 'express'
 import * as path from 'path'
 
-import { router, routerV1 } from './app/routes'
+import { router, routerV1 } from '../app/routes'
 
 const app = express()
 
@@ -11,7 +11,7 @@ const server = async () => {
   app.use('/', router)
   app.use('/v1/', routerV1)
 
-  app.use('/schema', express.static(path.join(__dirname, '/../public/schema')))
+  app.use('/schema', express.static(path.join(__dirname, '../../public/schema')))
 
   app.listen(port)
 
