@@ -2,7 +2,7 @@ import bugRepository from './bugRepository'
 
 const bugHandler = {
   async findAllBugs () {
-    let users = await bugRepository.findAll()
+    const users = await bugRepository.findAll()
 
     return users
   }
