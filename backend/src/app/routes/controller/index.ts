@@ -1,13 +1,11 @@
 import Router from 'express-promise-router'
 import getUsers from './users/getUsers'
+import getBugs from './bugs/getBugs'
 
 const router = Router()
 
-router.use((request, response, next) => {
-  response.locals.version = 'v1'
-  next()
-})
-
 router.get('/users', getUsers)
+
+router.get('/bugs', getBugs)
 
 export default router

@@ -58,3 +58,61 @@ Healthcheck endpoint
 
 ### Properties
 + `current_unix_timestamp` (number, required)
+
+# Group Users
+Методы для получения пользователей
+
+## Users [/users]
+
+### Get users [GET]
+Получить пользователей
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: test
+
++ Response 200 (application/json)
+    + Body
+
+            {
+                results: [
+                    {
+                        id: '1',
+                        username: 'Nick'
+                    }
+                ]
+            }
+
+# Group Bugs
+Методы для получения багов
+
+## Bugs [/bugs]
+
+### Get bugs [GET]
+Получить баги
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: test
+
++ Response 200 (application/json)
+    + Body
+
+            {
+                links: {
+                    next: 'http://localhost:5000/bugs?page=2&pageSize=20'
+                },
+                results: [
+                    {
+                        id: '1',
+                        title: 'Title',
+                        asignee: 'Nick'
+                    }
+                ],
+                page: 1,
+                pageSize: 20
+            }

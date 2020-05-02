@@ -1,7 +1,5 @@
-import router from './router'
-import routerV1 from './controller/v1'
+import router from './controller'
 
 export {
-  router,
-  routerV1
+  router
 }

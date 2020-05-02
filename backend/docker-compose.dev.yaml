@@ -1,7 +1,8 @@
 version: "3"
 networks:
-  smart-design:
-    external: true
+  default:
+    external:
+      name: ${BUILD_NET}
 
 volumes:
   dbdata:
@@ -16,13 +17,14 @@ services:
     volumes:
       - $PWD:/app:cached
     working_dir: /app
+    env_file: ./build/.env.list
     command: sh -c "npm run api:start"
-    networks:
-      - smart-design
     ports:
       - 5000:5000
     depends_on:
       - postgresql
+    networks:
+      - default
 
   postgresql:
     container_name: smart-table-postgresql
@@ -37,3 +39,15 @@ services:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: admin
       POSTGRES_DB: smart-design
+    networks:
+      - default
+
+  adminer:
+    image: adminer
+    restart: always
+    logging:
+      driver: none
+    ports:
+      - 8080:8080
+    networks:
+      - default
