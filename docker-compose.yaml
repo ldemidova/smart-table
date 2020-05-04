@@ -1,0 +1,65 @@
+version: "3"
+networks:
+  default:
+    external:
+      name: ${BUILD_NET}
+
+volumes:
+  dbdata:
+
+services:
+  server:
+    container_name: smart-table-server
+    build:
+      context: server
+      dockerfile: ./build/node/Dockerfile
+    volumes:
+      - $PWD/server:/app:cached
+    working_dir: /app
+    env_file: ./server/build/.env.list
+    command: sh -c "npm run api:start"
+    ports:
+      - 5000:5000
+    depends_on:
+      - postgresql
+    networks:
+      - default
+
+  client:
+    container_name: smart-table-client
+    build:
+      context: client
+      dockerfile: ./build/Dockerfile.dev
+    volumes:
+      - $PWD/client:/app:cached
+    working_dir: /app
+    command: sh -c "npm run start"
+    ports:
+      - 3000:3000
+    networks:
+      - default
+
+  postgresql:
+    container_name: smart-table-postgresql
+    image: postgres:9.6.11-alpine
+    volumes:
+      - "dbdata:/var/lib/postgresql/data"
+    env_file: ./server/build/.env.list
+    logging:
+      driver: none
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: smart-design
+    networks:
+      - default
+
+  adminer:
+    container_name: smart-table-adminer
+    image: adminer
+    logging:
+      driver: none
+    ports:
+      - 8080:8080
+    networks:
+      - default

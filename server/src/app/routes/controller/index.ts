@@ -4,8 +4,8 @@ import getBugs from './bugs/getBugs'
 
 const router = Router()
 
-router.get('/users', getUsers)
+router.get('/api/users', getUsers)
 
-router.get('/bugs', getBugs)
+router.get('/api/bugs', getBugs)
 
 export default router

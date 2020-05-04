@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+export BUILD_NET=smart-design
+
+docker-compose build
+
+docker-compose up -d --force-recreate --remove-orphans
+docker-compose logs -f
