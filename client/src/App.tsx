@@ -1,8 +1,18 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+const axios = require('axios');
+
+const getData = () => {
+  axios.get('/api/bugs')
+  .then((response: object) => {
+    console.log(response);
+  })
+}
 
 function App() {
+  getData();
+
   return (
     <div className="App">
       <header className="App-header">

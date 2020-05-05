@@ -26,43 +26,10 @@ FORMAT: 1A
 + Response 200
     + Attributes (object)
 
-
-
-
-## System Health [/system/health]
-
-### Get system health [GET]
-Healthcheck endpoint
-
-+ Request json (application/json)
-
-    + Headers
-
-            Authorization: test
-
-+ Response 200 (application/json)
-    + Attributes (Health)
-
-
-    + Body
-
-            {
-              "current_unix_timestamp": 1513934731
-            }
-
-
-# Data Structures
-
-## Health (object)
-
-
-### Properties
-+ `current_unix_timestamp` (number, required)
-
 # Group Users
 Методы для получения пользователей
 
-## Users [/users]
+## Users [/api/users]
 
 ### Get users [GET]
 Получить пользователей
@@ -88,7 +55,7 @@ Healthcheck endpoint
 # Group Bugs
 Методы для получения багов
 
-## Bugs [/bugs]
+## Bugs [/api/bugs]
 
 ### Get bugs [GET]
 Получить баги
@@ -104,7 +71,7 @@ Healthcheck endpoint
 
             {
                 links: {
-                    next: 'http://localhost:5000/bugs?page=2&pageSize=20'
+                    next: 'http://localhost:5000/api/bugs?page=2&pageSize=20'
                 },
                 results: [
                     {

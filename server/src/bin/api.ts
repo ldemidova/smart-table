@@ -14,7 +14,7 @@ const server = async () => {
   app.use(bodyParser.json({ type: 'application/*', 'limit': '5mb', verify: expressHelpers.captureRawBody }))
   app.use(bodyParser.urlencoded({ limit: '5mb', extended: false }))
 
-  app.use('/', router)
+  app.use('/api', router)
 
   app.use('/schema', express.static(path.join(__dirname, '../../public/schema')))
 

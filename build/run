@@ -2,9 +2,7 @@
 
 export BUILD_NET=smart-design
 
-export DEV_MODE=true
-
-export $(cat ./build/.env.base.dev)
+export $(cat ./server/build/.env.base.prod)
 
 docker-compose build
 
