@@ -10,13 +10,11 @@ volumes:
 services:
   ui:
     container_name: smart-table-ui
-    build:
-      context: .
-      dockerfile: ./Dockerfile.dev
+    image: node:12.10.0
     volumes:
       - $PWD:/app:cached
     working_dir: /app
-    command: sh -c "npm run start"
+    command: sh -c "npm i && npm run start"
     ports:
       - 3000:3000
     networks:

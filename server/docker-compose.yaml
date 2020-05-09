@@ -10,14 +10,12 @@ volumes:
 services:
   api:
     container_name: smart-table-api
-    build:
-      context: .
-      dockerfile: build/node/Dockerfile.dev
+    image: node:12.6-alpine
     volumes:
       - $PWD:/app:cached
     working_dir: /app
     env_file: ./build/.env.list
-    command: sh -c "npm run api:start"
+    command: sh -c "npm i && npm run api:start"
     ports:
       - 5000:5000
     depends_on:
