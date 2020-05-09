@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { getUsers, selectUser } from '../../../store/actions';
+import { Users, User, UserId } from '../../../types';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -22,31 +25,75 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-function UserSelect() {
+type Props = {
+  getUsers: (() => void),
+  selectUser: ((payload: User) => void),
+  users?: {
+    list: Users,
+    selected: User
+  }
+};
+
+const Component: React.FC<Props> = ({ getUsers, selectUser, users }) => {
   const classes = useStyles();
-  const [age, setAge] = React.useState('');
+
+  useEffect(() => {
+    getUsers();
+  }, [getUsers]);
 
   const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setAge(event.target.value as string);
+    const userId: UserId = event.target.value as UserId;
+    const all: User = { id: 'All', username: 'All' };
+
+    const user: User = (users && users.list.find(user => user.id === userId)) || all;
+
+    selectUser(user)
   };
 
-  return (
-    <div className={classes.wrapper}>
-      <FormControl className={classes.formControl}>
-        <InputLabel id="demo-simple-select-label">Age</InputLabel>
-        <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={age}
-          onChange={handleChange}
-        >
-          <MenuItem value={10}>Ten</MenuItem>
-          <MenuItem value={20}>Twenty</MenuItem>
-          <MenuItem value={30}>Thirty</MenuItem>
-        </Select>
-      </FormControl>
-    </div>
-  );
+  if (users) {
+    const { list, selected } = users;
+
+    return (
+      <div className={classes.wrapper}>
+        <FormControl className={classes.formControl}>
+          <InputLabel id="user-select-label">User</InputLabel>
+          <Select
+            labelId="user-select-label"
+            id="user-select"
+            value={selected.id}
+            onChange={handleChange}
+          >
+            <MenuItem value="All">All</MenuItem>
+            {
+              list.map((item: User) => (
+                <MenuItem key={item.id} value={item.id}>{item.username}</MenuItem>
+              ))
+            }
+          </Select>
+        </FormControl>
+      </div>
+    );
+  }
+
+  return null
 }
 
-export { UserSelect };
+const mapStateToProps = (users: Users) => ({
+  ...users
+});
+
+const mapDispatchToProps = (dispatch: Dispatch) => {
+  return {
+    getUsers() {
+      dispatch(getUsers())
+    },
+    selectUser(payload: User) {
+      dispatch(selectUser(payload))
+    }
+  }
+};
+
+export const UserSelect = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Component)
