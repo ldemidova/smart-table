@@ -1,4 +1,5 @@
 import { User, Users } from '../../types';
+import { SET_USERS, SELECT_USER } from '../constants';
 
 type UsersState = {
   list: Users | [],
@@ -20,10 +21,10 @@ const initState: UsersState = Object.freeze({
 
 const users = (state = initState, { type, payload }: UsersAction) => {
   switch (type) {
-    case 'SET_USERS': {
+    case SET_USERS: {
       return { ...state, list: payload }
     }
-    case 'SELECT_USER': {
+    case SELECT_USER: {
       return { ...state, selected: payload }
     }
     default: return state

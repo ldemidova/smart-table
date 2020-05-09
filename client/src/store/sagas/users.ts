@@ -1,5 +1,5 @@
 import { takeLatest, call, put } from 'redux-saga/effects';
-import { GET_USERS, API_USERS } from '../../constants';
+import { GET_USERS, API_USERS } from '../constants';
 import { setUsers } from '../actions';
 import axios from 'axios';
 

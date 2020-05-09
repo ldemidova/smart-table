@@ -1,34 +1,19 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableFooter from '@material-ui/core/TableFooter';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import { BugsTablePaginationActions } from './BugsTablePaginationActions'
-
-function createData(name: string, calories: number, fat: number) {
-  return { name, calories, fat };
-}
-
-const rows = [
-  createData('Cupcake', 305, 3.7),
-  createData('Donut', 452, 25.0),
-  createData('Eclair', 262, 16.0),
-  createData('Frozen yoghurt', 159, 6.0),
-  createData('Gingerbread', 356, 16.0),
-  createData('Honeycomb', 408, 3.2),
-  createData('Ice cream sandwich', 237, 9.0),
-  createData('Jelly Bean', 375, 0.0),
-  createData('KitKat', 518, 26.0),
-  createData('Lollipop', 392, 0.2),
-  createData('Marshmallow', 318, 0),
-  createData('Nougat', 360, 19.0),
-  createData('Oreo', 437, 18.0),
-].sort((a, b) => (a.calories < b.calories ? -1 : 1));
+import { BugsTablePaginationActions } from './BugsTablePaginationActions';
+import { Bugs } from '../../../types';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { getBugs } from '../../../store/actions';
 
 const useStyles = makeStyles({
   table: {
@@ -36,12 +21,18 @@ const useStyles = makeStyles({
   },
 });
 
-function BugsTable() {
+type Props = {
+  getBugs: (() => void),
+  bugs?: {
+    list: Bugs,
+    search: string
+  }
+};
+
+const Component: React.FC<Props> = ({ getBugs, bugs }) => {
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-
-  const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
   const handleChangePage = (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
     setPage(newPage);
@@ -54,53 +45,77 @@ function BugsTable() {
     setPage(0);
   };
 
-  return (
-    <TableContainer component={Paper}>
-      <Table className={classes.table} aria-label="custom pagination table">
-        <TableBody>
-          {(rowsPerPage > 0
-            ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-            : rows
-          ).map((row) => (
-            <TableRow key={row.name}>
-              <TableCell component="th" scope="row">
-                {row.name}
-              </TableCell>
-              <TableCell style={{ width: 160 }} align="right">
-                {row.calories}
-              </TableCell>
-              <TableCell style={{ width: 160 }} align="right">
-                {row.fat}
-              </TableCell>
+  useEffect(() => {
+    getBugs();
+  }, [getBugs]);
+
+  if (bugs) {
+    const { list, search } = bugs;
+
+    return (
+      <TableContainer component={Paper}>
+        <Table className={classes.table} aria-label="bugs table">
+          <TableHead>
+            <TableRow>
+              <TableCell align="center">Id</TableCell>
+              <TableCell>Title</TableCell>
+              <TableCell>assignee</TableCell>
             </TableRow>
-          ))}
-          {emptyRows > 0 && (
-            <TableRow style={{ height: 53 * emptyRows }}>
-              <TableCell colSpan={6} />
+          </TableHead>
+          <TableBody>
+            {
+              list.map((item) => (
+                <TableRow key={item.id}>
+                  <TableCell align="center">
+                    {item.id}
+                  </TableCell>
+                  <TableCell>
+                    {item.title}
+                  </TableCell>
+                  <TableCell>
+                    {item.assignee}
+                  </TableCell>
+                </TableRow>
+              ))
+            }
+          </TableBody>
+          <TableFooter>
+            <TableRow>
+              <TablePagination
+                rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+                colSpan={3}
+                count={list.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                SelectProps={{
+                  inputProps: { 'aria-label': 'rows per page' },
+                  native: true,
+                }}
+                onChangePage={handleChangePage}
+                onChangeRowsPerPage={handleChangeRowsPerPage}
+                ActionsComponent={BugsTablePaginationActions}
+              />
             </TableRow>
-          )}
-        </TableBody>
-        <TableFooter>
-          <TableRow>
-            <TablePagination
-              rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
-              colSpan={3}
-              count={rows.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              SelectProps={{
-                inputProps: { 'aria-label': 'rows per page' },
-                native: true,
-              }}
-              onChangePage={handleChangePage}
-              onChangeRowsPerPage={handleChangeRowsPerPage}
-              ActionsComponent={BugsTablePaginationActions}
-            />
-          </TableRow>
-        </TableFooter>
-      </Table>
-    </TableContainer>
-  );
+          </TableFooter>
+        </Table>
+      </TableContainer>
+    );
+  }
+
+  return null;
 }
 
-export { BugsTable }
+const mapStateToProps = (bugs: Bugs) => ({
+  ...bugs
+});
+
+const mapDispatchToProps = (dispatch: Dispatch) => {
+  return {
+    getBugs: () => { dispatch(getBugs()) }
+  }
+};
+
+export const BugsTable = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Component);

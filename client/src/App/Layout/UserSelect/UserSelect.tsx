@@ -18,10 +18,7 @@ const useStyles = makeStyles((theme: Theme) =>
     formControl: {
       margin: theme.spacing(1),
       minWidth: 120,
-    },
-    selectEmpty: {
-      marginTop: theme.spacing(2),
-    },
+    }
   }),
 );
 
@@ -84,12 +81,8 @@ const mapStateToProps = (users: Users) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
-    getUsers() {
-      dispatch(getUsers())
-    },
-    selectUser(payload: User) {
-      dispatch(selectUser(payload))
-    }
+    getUsers: () => { dispatch(getUsers()) },
+    selectUser: (payload: User) => { dispatch(selectUser(payload)) }
   }
 };
 
