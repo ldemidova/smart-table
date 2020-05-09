@@ -1,16 +1,26 @@
 import bugRepository from './bugRepository'
-import { Bugs } from '../../types'
 import Bug from './bug'
+import { MetaInfo } from '../../types'
+
 
 const bugHandler = {
-  async findAllBugs () {
-    const users = await bugRepository.findAll()
+  async findAllBugs (params, { page, pageSize }) {
+    const metaInfo: MetaInfo = {
+      hasNextPage: false,
+      total: 0
+    }
 
-    return users
+    const bugs = await bugRepository.findAll(params, { page, pageSize }, metaInfo)
+
+    return {
+      ...metaInfo,
+      results: bugs
+    }
   },
-  async saveAllBugs (bugs: Bugs) {
-    for (const { id, title, assignee } of bugs) {
-      await bugRepository.save(new Bug(id, title, assignee))
+  
+  async saveAllBugs (bugs) {
+    for (const bug of bugs) {
+      await bugRepository.save(new Bug(bug))
     }
   }
 }

@@ -55,7 +55,7 @@ FORMAT: 1A
 # Group Bugs
 Методы для получения багов
 
-## Bugs [/api/bugs]
+## Bugs [/api/bugs{?page,pageSize}]
 
 ### Get bugs [GET]
 Получить баги
@@ -65,6 +65,16 @@ FORMAT: 1A
     + Headers
 
             Authorization: test
+
++ Parameters
+
+    + page (number, optional)
+
+        Page number
+
+    + pageSize (number, optional)
+
+        Page size
 
 + Response 200 (application/json)
     + Body

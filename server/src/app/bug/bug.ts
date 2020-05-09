@@ -3,7 +3,7 @@ class Bug {
   title: string
   assignee: string
 
-  constructor (id: number, title: string, assignee: string) {
+  constructor ({ id, title, assignee }) {
     this.id = id
     this.title = title
     this.assignee = assignee
@@ -17,7 +17,7 @@ class Bug {
     return this.title
   }
 
-  getBugassignee () {
+  getBugAssignee () {
     return this.assignee
   }
 }

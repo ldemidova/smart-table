@@ -34,3 +34,13 @@ export interface User {
 }
 
 export type Users = User[]
+
+export type MetaInfo = {
+  hasNextPage: boolean,
+  total: number
+}
+
+export type Links = {
+  prev?: string,
+  next?: string
+}

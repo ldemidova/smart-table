@@ -20,7 +20,7 @@ export class EntityManager {
   private entityName: string
   private tableName: string
   private primaryKey: Array<string>
-  private fieldsMap: object
+  public fieldsMap: object
   private entityList: WeakMap<object, string>
 
   constructor (config: Config, pool: Pool) {
@@ -40,6 +40,10 @@ export class EntityManager {
 
   getTableName (): string {
     return this.tableName
+  }
+
+  getFieldsMap (): object {
+    return this.fieldsMap
   }
 
   getPrimaryKey (): Array<string> {
@@ -178,5 +182,33 @@ export class EntityManager {
     }
 
     return query
+  }
+
+  getLimitExpression (paging) {
+    if (!Number.isInteger(paging.page)) {
+      throw new Error(`Invalid page param, passed: ${paging.page}`)
+    }
+
+    if (!Number.isInteger(paging.pageSize)) {
+      throw new Error(`Invalid pageSize param, passed: ${paging.pageSize}`)
+    }
+
+    const {
+      page,
+      pageSize,
+      oneMore = false
+    } = paging
+
+    const offset = pageSize * (page - 1)
+    const limit = oneMore ? pageSize + 1 : pageSize
+
+    return `LIMIT ${limit} OFFSET ${offset}`
+  }
+
+  mapRowToEntityParams (fieldMap, values) {
+    return Object.keys(fieldMap).reduce((entity, name) => ({
+      ...entity,
+      [fieldMap[name]]: values[name],
+    }), {})
   }
 }
