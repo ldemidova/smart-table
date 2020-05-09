@@ -1,7 +1,6 @@
 import { EntityManager, pool } from '../../db'
 import User from './user'
 
-
 class UserRepository extends EntityManager {
   constructor () {
     super({
@@ -24,6 +23,10 @@ class UserRepository extends EntityManager {
     const entities = await this.query(query, [])
 
     return entities || []
+  }
+
+  async save (user: User) {
+    await this.persist(user)
   }
 }
 

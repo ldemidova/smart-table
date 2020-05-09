@@ -1,12 +1,12 @@
 class Bug {
   id: number
   title: string
-  asignee: string
+  assignee: string
 
-  constructor (id: number, title: string, asignee: string) {
+  constructor (id: number, title: string, assignee: string) {
     this.id = id
     this.title = title
-    this.asignee = asignee
+    this.assignee = assignee
   }
 
   getBugId () {
@@ -17,8 +17,8 @@ class Bug {
     return this.title
   }
 
-  getBugAsignee () {
-    return this.asignee
+  getBugassignee () {
+    return this.assignee
   }
 }
 

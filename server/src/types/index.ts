@@ -19,3 +19,18 @@ export interface EntityManagerConfig {
   primaryKey: Array<string>
   fieldsMap: object
 }
+
+export interface Bug {
+  id: number,
+  title: string,
+  assignee?: string
+}
+
+export type Bugs = Array<Bug>
+
+export interface User {
+  id: number,
+  username: string
+}
+
+export type Users = User[]
