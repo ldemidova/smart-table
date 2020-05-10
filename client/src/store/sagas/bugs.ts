@@ -5,7 +5,7 @@ import axios from 'axios';
 import { BugsAction, BugsState } from '../../types';
 
 export function* watcherSetBugsSaga() {
-  const action = yield takeLatest(GET_BUGS, workerSetBugsSaga);
+  yield takeLatest(GET_BUGS, workerSetBugsSaga);
 }
 
 

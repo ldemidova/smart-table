@@ -1,7 +1,13 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
 import { fade, makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { StoreState } from '../../../../types';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { searchBugs } from '../../../../store/actions';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -40,8 +46,49 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 
-function Search() {
+type Props = {
+  searchBugs: (payload: string) => void,
+  searchBy: string
+};
+
+const Component: React.FC<Props> = ({
+  searchBugs,
+  searchBy
+}) => {
   const classes = useStyles();
+
+  const [value, setValue] = useState<string>(searchBy);
+  const [debouncedValue, setDebouncedValue] = useState<string>(searchBy);
+
+  const [onSearch$] = useState(() => new Subject());
+
+  useEffect(() => {
+    onSearch$
+      .pipe(
+        debounceTime(400),
+        distinctUntilChanged()
+      )
+      .subscribe(next => updateDebouncedValue(next as string));
+  }, [onSearch$]);
+
+  useEffect(() => {
+    searchBugs(debouncedValue);
+  }, [
+    searchBugs,
+    debouncedValue
+  ]);
+
+  const updateDebouncedValue = (next: string) => {
+    setDebouncedValue(next);
+  };
+
+  const handleSearch = (event: React.ChangeEvent<{ value: unknown }>) => {
+    const str = event.target.value as string
+
+    setValue(str);
+
+    onSearch$.next(str);
+  };
 
   return (
     <div className={classes.search}>
@@ -55,9 +102,24 @@ function Search() {
           input: classes.inputInput,
         }}
         inputProps={{ 'aria-label': 'search' }}
+        value={value}
+        onChange={handleSearch}
       />
     </div>
   );
 }
 
-export { Search };
+const mapStateToProps = ({ bugs: { searchBy } }: StoreState) => ({
+  searchBy
+});
+
+const mapDispatchToProps = (dispatch: Dispatch) => {
+  return {
+    searchBugs: (payload: string) => { dispatch(searchBugs(payload)) }
+  }
+};
+
+export const Search = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Component)

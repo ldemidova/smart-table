@@ -21,10 +21,10 @@ export type Bug = {
 export type Bugs = Bug[];
 
 export type BugsParams = {
-  page: number,
-  pageSize: number,
-  searchBy: string,
-  userId: UserId
+  page?: number,
+  pageSize?: number,
+  searchBy?: string,
+  userId?: UserId
 };
 
 export type BugsAction = {

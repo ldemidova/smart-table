@@ -18,7 +18,7 @@ import { getBugs } from '../../../store/actions';
 const useStyles = makeStyles({
   table: {
     minWidth: 500
-  },
+  }
 });
 
 type Props = {

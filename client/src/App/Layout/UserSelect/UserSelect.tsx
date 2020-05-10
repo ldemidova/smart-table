@@ -7,7 +7,7 @@ import Select from '@material-ui/core/Select';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { getUsers, selectUser } from '../../../store/actions';
-import { Users, User, UserId } from '../../../types';
+import { Users, User, UserId, StoreState } from '../../../types';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -75,8 +75,8 @@ const Component: React.FC<Props> = ({ getUsers, selectUser, users }) => {
   return null
 }
 
-const mapStateToProps = (users: Users) => ({
-  ...users
+const mapStateToProps = ({ users }: StoreState) => ({
+  users
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
