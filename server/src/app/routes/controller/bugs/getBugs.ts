@@ -31,8 +31,7 @@ const getBugs = async (request, response) => {
       links,
       total,
       results,
-      searchBy,
-      userId
+      searchBy
     })
   } catch (error) {
     sendError(response, error, {})
