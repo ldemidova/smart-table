@@ -10,7 +10,7 @@ import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { BugsTablePaginationActions } from './BugsTablePaginationActions';
-import { Bugs } from '../../../types';
+import { BugsParams, Bugs, StoreState, UserId } from '../../../types';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { getBugs } from '../../../store/actions';
@@ -22,36 +22,51 @@ const useStyles = makeStyles({
 });
 
 type Props = {
-  getBugs: (() => void),
-  bugs?: {
-    list: Bugs,
-    search: string
-  }
+  getBugs: ((params: BugsParams) => void),
+  list: Bugs,
+  page: number,
+  pageSize: number,
+  searchBy: string,
+  total: number,
+  byUser: UserId
 };
 
-const Component: React.FC<Props> = ({ getBugs, bugs }) => {
+const Component: React.FC<Props> = ({
+  getBugs,
+  list,
+  page,
+  pageSize,
+  searchBy,
+  total,
+  byUser
+}) => {
   const classes = useStyles();
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+
+  const [currentPage, setCurrentPage] = React.useState(page);
+  const [rowsPerPage, setRowsPerPage] = React.useState(pageSize);
 
   const handleChangePage = (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
-    setPage(newPage);
+    setCurrentPage(newPage);
   };
 
   const handleChangeRowsPerPage = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
+    setCurrentPage(0);
   };
 
   useEffect(() => {
-    getBugs();
-  }, [getBugs]);
+    getBugs({ page: currentPage + 1, pageSize: rowsPerPage, searchBy, userId: byUser });
+  }, [
+    getBugs,
+    currentPage,
+    rowsPerPage,
+    byUser,
+    searchBy
+  ]);
 
-  if (bugs) {
-    const { list, search } = bugs;
-
+  if (list) {
     return (
       <TableContainer component={Paper}>
         <Table className={classes.table} aria-label="bugs table">
@@ -59,7 +74,7 @@ const Component: React.FC<Props> = ({ getBugs, bugs }) => {
             <TableRow>
               <TableCell align="center">Id</TableCell>
               <TableCell>Title</TableCell>
-              <TableCell>assignee</TableCell>
+              <TableCell>Assignee</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -73,7 +88,7 @@ const Component: React.FC<Props> = ({ getBugs, bugs }) => {
                     {item.title}
                   </TableCell>
                   <TableCell>
-                    {item.assignee}
+                    {item.username}
                   </TableCell>
                 </TableRow>
               ))
@@ -82,11 +97,11 @@ const Component: React.FC<Props> = ({ getBugs, bugs }) => {
           <TableFooter>
             <TableRow>
               <TablePagination
-                rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+                rowsPerPageOptions={[10, 20, 50]}
                 colSpan={3}
-                count={list.length}
+                count={total}
                 rowsPerPage={rowsPerPage}
-                page={page}
+                page={currentPage}
                 SelectProps={{
                   inputProps: { 'aria-label': 'rows per page' },
                   native: true,
@@ -105,13 +120,14 @@ const Component: React.FC<Props> = ({ getBugs, bugs }) => {
   return null;
 }
 
-const mapStateToProps = (bugs: Bugs) => ({
-  ...bugs
+const mapStateToProps = ({ bugs, users: { selected: { id } } }: StoreState) => ({
+  ...bugs,
+  byUser: id
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
-    getBugs: () => { dispatch(getBugs()) }
+    getBugs: (params: BugsParams) => { dispatch(getBugs(params)) }
   }
 };
 

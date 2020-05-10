@@ -1,10 +1,5 @@
-import { User, Users } from '../../types';
+import { User, Users, UsersState } from '../../types';
 import { SET_USERS, SELECT_USER } from '../constants';
-
-type UsersState = {
-  list: Users | [],
-  selected: User
-};
 
 type UsersAction = {
   type: string,

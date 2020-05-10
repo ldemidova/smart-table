@@ -1,28 +1,18 @@
-import { Bugs } from '../../types';
-import { } from '../constants';
-
-type BugsState = {
-  list: Bugs | [],
-  search: ''
-};
-
-type BugsAction = {
-  type: string,
-  payload: Bugs | string
-};
+import { BugsState, BugsAction } from '../../types';
+import { SET_BUGS } from '../constants';
 
 const initState: BugsState = {
   list: [],
-  search: ''
+  searchBy: '',
+  page: 0,
+  pageSize: 20,
+  total: 10
 };
 
 const bugs = (state = initState, { type, payload }: BugsAction) => {
   switch (type) {
-    case 'SET_BUGS': {
-      return { ...state, list: payload }
-    }
-    case 'SEARCH_BUGS': {
-      return { ...state, search: payload }
+    case SET_BUGS: {
+      return { ...payload }
     }
     default: return state
   }

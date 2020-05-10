@@ -1,6 +1,5 @@
-import { Bugs } from '../../types';
+import { BugsState, BugsParams } from '../../types';
 import { GET_BUGS, SET_BUGS } from '../constants';
 
-export const getBugs = () => ({ type: GET_BUGS });
-export const setBugs = (payload: Bugs | []) => ({ type: SET_BUGS, payload });
-// export const selectUser = (payload: User) => ({ type: SELECT_USER, payload });
+export const getBugs = (payload: BugsParams) => ({ type: GET_BUGS, payload });
+export const setBugs = (payload: BugsState) => ({ type: SET_BUGS, payload });
