@@ -14,7 +14,7 @@ exports.up = (pgm) => {
       notNull: true
     },
     assignee: {
-      type: 'varchar(255)'
+      type: 'bigint'
     }
   }
 

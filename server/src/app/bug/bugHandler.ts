@@ -17,7 +17,7 @@ const bugHandler = {
       results: bugs
     }
   },
-  
+
   async saveAllBugs (bugs) {
     for (const bug of bugs) {
       await bugRepository.save(new Bug(bug))

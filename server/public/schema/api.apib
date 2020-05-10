@@ -55,7 +55,7 @@ FORMAT: 1A
 # Group Bugs
 Методы для получения багов
 
-## Bugs [/api/bugs{?page,pageSize}]
+## Bugs [/api/bugs{?page,pageSize,userId,searchBy}]
 
 ### Get bugs [GET]
 Получить баги
@@ -75,6 +75,14 @@ FORMAT: 1A
     + pageSize (number, optional)
 
         Page size
+
+    + userId (number, optional)
+
+        User id
+
+    + searchBy (string, optional)
+
+        Search
 
 + Response 200 (application/json)
     + Body

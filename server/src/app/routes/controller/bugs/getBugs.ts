@@ -7,7 +7,10 @@ const getBugs = async (request, response) => {
     const page = response.locals.page
     const pageSize = response.locals.pageSize
 
-    const { hasNextPage, results, total } = await bugHandler.findAllBugs({}, { page, pageSize })
+    const searchBy = request.query.searchBy
+    const userId = parseInt(request.query.userId, 10)
+
+    const { hasNextPage, results, total } = await bugHandler.findAllBugs({ searchBy, userId}, { page, pageSize })
 
     const links: Links = {}
     const { prev, next } = response.locals.links
@@ -27,10 +30,11 @@ const getBugs = async (request, response) => {
       pageSize,
       links,
       total,
-      results
+      results,
+      searchBy,
+      userId
     })
   } catch (error) {
-    console.log(error)
     sendError(response, error, {})
   }
 }

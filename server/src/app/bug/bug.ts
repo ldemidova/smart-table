@@ -1,23 +1,25 @@
 class Bug {
   id: number
   title: string
-  assignee: string
+  assignee: number
+  username: string
 
-  constructor ({ id, title, assignee }) {
+  constructor ({ id, title, assignee, username }) {
     this.id = id
     this.title = title
     this.assignee = assignee
+    this.username = username
   }
 
-  getBugId () {
+  getId () {
     return this.id
   }
 
-  getBugTitle () {
+  getTitle () {
     return this.title
   }
 
-  getBugAssignee () {
+  getAssignee () {
     return this.assignee
   }
 }
