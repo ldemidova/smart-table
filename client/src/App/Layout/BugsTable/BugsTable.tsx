@@ -19,6 +19,12 @@ const useStyles = makeStyles({
   table: {
     minWidth: 500
   },
+  id: {
+    width: '5%'
+  },
+  assignee: {
+    width: '15%'
+  },
   empty: {
     display: 'flex',
     flex: '1',
@@ -78,9 +84,9 @@ const Component: React.FC<Props> = ({
         <Table className={classes.table} aria-label="bugs table">
           <TableHead>
             <TableRow>
-              <TableCell align="center">Id</TableCell>
+              <TableCell align="center" className={classes.id}>Id</TableCell>
               <TableCell>Title</TableCell>
-              <TableCell>Assignee</TableCell>
+              <TableCell className={classes.assignee}>Assignee</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
