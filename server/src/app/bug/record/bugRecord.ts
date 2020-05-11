@@ -1,14 +1,12 @@
-class Bug {
+class BugRecord {
   id: number
   title: string
-  assignee: number
-  username: string
+  assignee: string
 
-  constructor ({ id, title, assignee, username }) {
+  constructor ({ id, title, assignee }) {
     this.id = id
     this.title = title
     this.assignee = assignee
-    this.username = username
   }
 
   getId () {
@@ -24,4 +22,4 @@ class Bug {
   }
 }
 
-export default Bug
+export default BugRecord

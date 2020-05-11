@@ -1,4 +1,14 @@
 
-import bugHandler from './bugHandler'
+import { bugViewHandler } from './view'
+import { bugRecordHandler } from './record'
 
-export { bugHandler }
+
+const bugHandler = {
+  ...bugViewHandler,
+  ...bugRecordHandler
+}
+
+
+export {
+  bugHandler
+}

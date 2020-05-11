@@ -1,27 +1,19 @@
-import { EntityManager, pool } from '../../db'
-import Bug from './bug'
-import { MetaInfo } from '../../types'
+import { EntityManager, pool } from '../../../db'
+import BugView from './bugView'
+import { MetaInfo } from '../../../types'
 
-class BugRepository extends EntityManager {
+class BugViewRepository extends EntityManager {
   constructor () {
     super({
-      entity: Bug,
-      tableName: 'bugs',
+      entity: BugView,
+      tableName: '',
       primaryKey: ['id'],
       fieldsMap: {
         id: 'id',
         title: 'title',
-        assignee: 'assignee'
+        username: 'username'
       }
     }, pool)
-  }
-
-  getJoinMap () {
-    return {
-      id: 'id',
-      title: 'title',
-      username: 'username'
-    }
   }
 
   getBugTableName () {
@@ -33,7 +25,7 @@ class BugRepository extends EntityManager {
   }
 
   mapRowToEntity (values) {
-    return new Bug(this.mapRowToEntityParams(this.getJoinMap(), values) as Bug)
+    return new BugView(this.mapRowToEntityParams(this.getFieldsMap(), values) as BugView)
   }
 
   getWhereClause ({ searchBy, userId }) {
@@ -100,10 +92,6 @@ class BugRepository extends EntityManager {
 
     return entities.slice(0, pageSize)
   }
-
-  async save (bug: Bug) {
-    await this.persist(bug)
-  }
 }
 
-export default new BugRepository()
+export default new BugViewRepository()
