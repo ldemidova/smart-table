@@ -51,11 +51,13 @@ Node.JS, база - PostgreSQL
 ### Developement
 1. Запуск сервера
 ```bash
-./server/build/run-dev
+cd server
+./build/run-dev
 ```
 2. Запуск клиента
 ```bash
-./client/build/run-dev
+cd client
+./run-dev
 ```
 3. Сайт будет доступен по [адресу](http://localhost:3000)
 4. Схема API доступна по [aдресу](http://localhost:5000/schema)
@@ -64,7 +66,7 @@ Node.JS, база - PostgreSQL
 ### Production
 1. Запуск
 ```bash
-./build/run-dev
+./build/run
 ```
 2. Сайт будет доступен по [адресу](http://localhost)
 
