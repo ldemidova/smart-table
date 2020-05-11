@@ -58,7 +58,7 @@ const initUsers = async () => {
   }
 }
 
-initBugs()
 initUsers()
+initBugs()
 
 server()
