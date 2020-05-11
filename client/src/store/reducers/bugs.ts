@@ -12,7 +12,7 @@ const initState: BugsState = {
 const bugs = (state = initState, { type, payload }: BugsAction) => {
   switch (type) {
     case SET_BUGS: {
-      return { ...payload }
+      return { ...state, ...payload }
     }
     case SEARCH_BUGS: {
       return { ...state, searchBy: payload }
