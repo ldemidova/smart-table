@@ -18,6 +18,12 @@ import { getBugs } from '../../../store/actions';
 const useStyles = makeStyles({
   table: {
     minWidth: 500
+  },
+  empty: {
+    display: 'flex',
+    flex: '1',
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 });
 
@@ -66,7 +72,7 @@ const Component: React.FC<Props> = ({
     searchBy
   ]);
 
-  if (list) {
+  if (list && list.length) {
     return (
       <TableContainer component={Paper}>
         <Table className={classes.table} aria-label="bugs table">
@@ -117,7 +123,9 @@ const Component: React.FC<Props> = ({
     );
   }
 
-  return null;
+  return (
+    <div className={classes.empty}>No data</div>
+  );
 }
 
 const mapStateToProps = ({ bugs, users: { selected: { id } } }: StoreState) => ({

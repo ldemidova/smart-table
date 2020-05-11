@@ -13,6 +13,7 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     wrapper: {
       display: 'flex',
+      flex: '0 0 auto',
       margin: '10px 0'
     },
     formControl: {

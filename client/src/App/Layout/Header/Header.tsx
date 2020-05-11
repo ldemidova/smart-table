@@ -10,6 +10,7 @@ import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     header: {
+      flex: '0 0 auto',
       height: '64px'
     },
     headerToolbar: {
