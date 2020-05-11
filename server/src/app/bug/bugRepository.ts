@@ -48,13 +48,14 @@ class BugRepository extends EntityManager {
     if (searchBy) {
       or.push(`${userTable}.username LIKE '%${searchBy}%'`)
       or.push(`${bugTable}.title LIKE '%${searchBy}%'`)
+      or.push(`${bugTable}.id = ${searchBy}`)
     }
 
     if (userId) {
       and.push(`${bugTable}.assignee = ${userId}`)
     }
 
-    or.length && and.push(or.join(' OR '))
+    or.length && and.push(`(${or.join(' OR ')})`)
 
     return clause + and.join(' AND ')
   }
