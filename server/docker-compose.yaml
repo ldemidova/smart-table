@@ -15,7 +15,7 @@ services:
       - $PWD:/app:cached
     working_dir: /app
     env_file: ./build/.env.list
-    command: sh -c "npm i && npm run api:start"
+    command: sh -c "npm i && npm run start"
     ports:
       - 5000:5000
     depends_on:

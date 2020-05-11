@@ -3,11 +3,6 @@ import bodyParser from 'body-parser'
 import * as path from 'path'
 import { expressHelpers } from '../helpers'
 import logger from '../app/logger'
-import { bugHandler } from '../app/bug'
-import { userHandler } from '../app/user'
-import bugs from '../data/bugs.json'
-import users from '../data/users.json'
-
 
 import { router } from '../app/routes'
 
@@ -30,35 +25,9 @@ const server = async () => {
 
   logger.info(`HTTP server start and listen :${port} port`)
 
-  await bugHandler.saveAllBugs(bugs)
-  await bugHandler.saveAllBugs(bugs)
-
   process.on("SIGTERM", () => {
     process.exit(0)
   })
 }
-
-const initBugs = async () => {
-  logger.info(`[initData] Init bugs`)
-
-  try {
-    await bugHandler.saveAllBugs(bugs)
-  } catch (error) {
-    logger.info(`[initData] Init bugs with error: ${error.message}`)
-  }
-}
-
-const initUsers = async () => {
-  logger.info(`[initData] Init users`)
-
-  try {
-    await userHandler.saveAllUsers(users)
-  } catch (error) {
-    logger.info(`[initData] Init users with error: ${error.message}`)
-  }
-}
-
-initUsers()
-initBugs()
 
 server()

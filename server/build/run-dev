@@ -6,6 +6,8 @@ export DEV_MODE=true
 
 export $(cat ./build/.env.base.dev)
 
+docker network create ${BUILD_NET}
+
 docker-compose build
 
 docker-compose up -d --force-recreate --remove-orphans

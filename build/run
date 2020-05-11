@@ -4,6 +4,8 @@ export BUILD_NET=smart-design
 
 export $(cat ./server/build/.env.base.prod)
 
+docker network create ${BUILD_NET}
+
 docker-compose build
 
 docker-compose up -d --force-recreate --remove-orphans

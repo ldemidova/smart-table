@@ -13,6 +13,7 @@ services:
     build:
       context: server
       dockerfile: ./build/node/Dockerfile
+    command: sh -c "npm run migrate:up && node dist/bin/init-data.js && node dist/bin/api.js"
     env_file: ./server/build/.env.list
     depends_on:
       - db

@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "start": "npm run migrate:up && npm run init:data && npm run api:start",
+    "init:data": "ts-node src/bin/init-data.ts",
     "api:start": "nodemon src/bin/api.ts --exec 'npm run lint && ts-node'",
     "build": "tsc",
     "lint": "eslint --ext .ts ./src",
